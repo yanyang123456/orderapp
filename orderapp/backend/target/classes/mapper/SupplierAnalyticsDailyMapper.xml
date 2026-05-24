@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.SupplierAnalyticsDailyMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.SupplierAnalyticsDaily">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="stat_date" property="statDate" jdbcType="DATE" />
+        <result column="product_views" property="productViews" jdbcType="INTEGER" />
+        <result column="order_count" property="orderCount" jdbcType="INTEGER" />
+        <result column="sales_amount" property="salesAmount" jdbcType="DECIMAL" />
+        <result column="return_rate" property="returnRate" jdbcType="DECIMAL" />
+        <result column="aftersale_rate" property="aftersaleRate" jdbcType="DECIMAL" />
+        <result column="fulfillment_rate" property="fulfillmentRate" jdbcType="DECIMAL" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, supplier_id, stat_date, product_views, order_count, sales_amount, return_rate, aftersale_rate, fulfillment_rate, created_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.SupplierAnalyticsDaily" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO supplier_analytics_daily (supplier_id, stat_date, product_views, order_count, sales_amount, return_rate, aftersale_rate, fulfillment_rate, created_at)
+        VALUES (#{supplierId, jdbcType=BIGINT}, #{statDate, jdbcType=DATE}, #{productViews, jdbcType=INTEGER}, #{orderCount, jdbcType=INTEGER}, #{salesAmount, jdbcType=DECIMAL}, #{returnRate, jdbcType=DECIMAL}, #{aftersaleRate, jdbcType=DECIMAL}, #{fulfillmentRate, jdbcType=DECIMAL}, #{createdAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO supplier_analytics_daily (supplier_id, stat_date, product_views, order_count, sales_amount, return_rate, aftersale_rate, fulfillment_rate, created_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.supplierId, jdbcType=BIGINT}, #{item.statDate, jdbcType=DATE}, #{item.productViews, jdbcType=INTEGER}, #{item.orderCount, jdbcType=INTEGER}, #{item.salesAmount, jdbcType=DECIMAL}, #{item.returnRate, jdbcType=DECIMAL}, #{item.aftersaleRate, jdbcType=DECIMAL}, #{item.fulfillmentRate, jdbcType=DECIMAL}, #{item.createdAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.SupplierAnalyticsDaily">
+        UPDATE supplier_analytics_daily
+        <set>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="statDate != null">stat_date = #{statDate, jdbcType=DATE},</if>
+            <if test="productViews != null">product_views = #{productViews, jdbcType=INTEGER},</if>
+            <if test="orderCount != null">order_count = #{orderCount, jdbcType=INTEGER},</if>
+            <if test="salesAmount != null">sales_amount = #{salesAmount, jdbcType=DECIMAL},</if>
+            <if test="returnRate != null">return_rate = #{returnRate, jdbcType=DECIMAL},</if>
+            <if test="aftersaleRate != null">aftersale_rate = #{aftersaleRate, jdbcType=DECIMAL},</if>
+            <if test="fulfillmentRate != null">fulfillment_rate = #{fulfillmentRate, jdbcType=DECIMAL},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.SupplierAnalyticsDaily">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_analytics_daily
+        <where>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="statDate != null">AND stat_date = #{statDate, jdbcType=DATE}</if>
+            <if test="productViews != null">AND product_views = #{productViews, jdbcType=INTEGER}</if>
+            <if test="orderCount != null">AND order_count = #{orderCount, jdbcType=INTEGER}</if>
+            <if test="salesAmount != null">AND sales_amount = #{salesAmount, jdbcType=DECIMAL}</if>
+            <if test="returnRate != null">AND return_rate = #{returnRate, jdbcType=DECIMAL}</if>
+            <if test="aftersaleRate != null">AND aftersale_rate = #{aftersaleRate, jdbcType=DECIMAL}</if>
+            <if test="fulfillmentRate != null">AND fulfillment_rate = #{fulfillmentRate, jdbcType=DECIMAL}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_analytics_daily WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_analytics_daily
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM supplier_analytics_daily WHERE id = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByIds">
+        DELETE FROM supplier_analytics_daily WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </delete>
+
+    <insert id="upsertOrderAnalytics">
+        INSERT INTO supplier_analytics_daily (supplier_id, stat_date, product_views, order_count, sales_amount, return_rate, aftersale_rate, fulfillment_rate, created_at)
+        VALUES (#{supplierId, jdbcType=BIGINT}, #{statDate, jdbcType=DATE}, 0, #{orderCount, jdbcType=INTEGER}, #{salesAmount, jdbcType=DECIMAL}, 0, 0, 0, NOW())
+        ON DUPLICATE KEY UPDATE
+            order_count = order_count + VALUES(order_count),
+            sales_amount = sales_amount + VALUES(sales_amount)
+    </insert>
+
+</mapper>

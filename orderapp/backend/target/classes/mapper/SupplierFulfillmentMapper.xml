@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.SupplierFulfillmentMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.SupplierFulfillment">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="delivery_no" property="deliveryNo" jdbcType="VARCHAR" />
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="area" property="area" jdbcType="VARCHAR" />
+        <result column="warehouse_id" property="warehouseId" jdbcType="BIGINT" />
+        <result column="warehouse" property="warehouse" jdbcType="VARCHAR" />
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+        <result column="customer_address" property="customerAddress" jdbcType="VARCHAR" />
+        <result column="appointment_date" property="appointmentDate" jdbcType="DATE" />
+        <result column="appointment_time" property="appointmentTime" jdbcType="VARCHAR" />
+        <result column="item_summary" property="itemSummary" jdbcType="VARCHAR" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="volume" property="volume" jdbcType="DECIMAL" />
+        <result column="weight" property="weight" jdbcType="DECIMAL" />
+        <result column="driver_name" property="driverName" jdbcType="VARCHAR" />
+        <result column="driver_mobile" property="driverMobile" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="shipped_at" property="shippedAt" jdbcType="TIMESTAMP" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, supplier_id, delivery_no, order_no, area, warehouse_id, warehouse, customer_name, customer_address, appointment_date, appointment_time, item_summary, quantity, volume, weight, driver_name, driver_mobile, status, shipped_at, created_at, updated_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.SupplierFulfillment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO supplier_fulfillments (supplier_id, delivery_no, order_no, area, warehouse_id, warehouse, customer_name, customer_address, appointment_date, appointment_time, item_summary, quantity, volume, weight, driver_name, driver_mobile, status, shipped_at, created_at, updated_at)
+        VALUES (#{supplierId, jdbcType=BIGINT}, #{deliveryNo, jdbcType=VARCHAR}, #{orderNo, jdbcType=VARCHAR}, #{area, jdbcType=VARCHAR}, #{warehouseId, jdbcType=BIGINT}, #{warehouse, jdbcType=VARCHAR}, #{customerName, jdbcType=VARCHAR}, #{customerAddress, jdbcType=VARCHAR}, #{appointmentDate, jdbcType=DATE}, #{appointmentTime, jdbcType=VARCHAR}, #{itemSummary, jdbcType=VARCHAR}, #{quantity, jdbcType=INTEGER}, #{volume, jdbcType=DECIMAL}, #{weight, jdbcType=DECIMAL}, #{driverName, jdbcType=VARCHAR}, #{driverMobile, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{shippedAt, jdbcType=TIMESTAMP}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO supplier_fulfillments (supplier_id, delivery_no, order_no, area, warehouse_id, warehouse, customer_name, customer_address, appointment_date, appointment_time, item_summary, quantity, volume, weight, driver_name, driver_mobile, status, shipped_at, created_at, updated_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.supplierId, jdbcType=BIGINT}, #{item.deliveryNo, jdbcType=VARCHAR}, #{item.orderNo, jdbcType=VARCHAR}, #{item.area, jdbcType=VARCHAR}, #{item.warehouseId, jdbcType=BIGINT}, #{item.warehouse, jdbcType=VARCHAR}, #{item.customerName, jdbcType=VARCHAR}, #{item.customerAddress, jdbcType=VARCHAR}, #{item.appointmentDate, jdbcType=DATE}, #{item.appointmentTime, jdbcType=VARCHAR}, #{item.itemSummary, jdbcType=VARCHAR}, #{item.quantity, jdbcType=INTEGER}, #{item.volume, jdbcType=DECIMAL}, #{item.weight, jdbcType=DECIMAL}, #{item.driverName, jdbcType=VARCHAR}, #{item.driverMobile, jdbcType=VARCHAR}, #{item.status, jdbcType=VARCHAR}, #{item.shippedAt, jdbcType=TIMESTAMP}, #{item.createdAt, jdbcType=TIMESTAMP}, #{item.updatedAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.SupplierFulfillment">
+        UPDATE supplier_fulfillments
+        <set>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="deliveryNo != null">delivery_no = #{deliveryNo, jdbcType=VARCHAR},</if>
+            <if test="orderNo != null">order_no = #{orderNo, jdbcType=VARCHAR},</if>
+            <if test="area != null">area = #{area, jdbcType=VARCHAR},</if>
+            <if test="warehouseId != null">warehouse_id = #{warehouseId, jdbcType=BIGINT},</if>
+            <if test="warehouse != null">warehouse = #{warehouse, jdbcType=VARCHAR},</if>
+            <if test="customerName != null">customer_name = #{customerName, jdbcType=VARCHAR},</if>
+            <if test="customerAddress != null">customer_address = #{customerAddress, jdbcType=VARCHAR},</if>
+            <if test="appointmentDate != null">appointment_date = #{appointmentDate, jdbcType=DATE},</if>
+            <if test="appointmentTime != null">appointment_time = #{appointmentTime, jdbcType=VARCHAR},</if>
+            <if test="itemSummary != null">item_summary = #{itemSummary, jdbcType=VARCHAR},</if>
+            <if test="quantity != null">quantity = #{quantity, jdbcType=INTEGER},</if>
+            <if test="volume != null">volume = #{volume, jdbcType=DECIMAL},</if>
+            <if test="weight != null">weight = #{weight, jdbcType=DECIMAL},</if>
+            <if test="driverName != null">driver_name = #{driverName, jdbcType=VARCHAR},</if>
+            <if test="driverMobile != null">driver_mobile = #{driverMobile, jdbcType=VARCHAR},</if>
+            <if test="status != null">status = #{status, jdbcType=VARCHAR},</if>
+            <if test="shippedAt != null">shipped_at = #{shippedAt, jdbcType=TIMESTAMP},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.SupplierFulfillment">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_fulfillments
+        <where>
+            <if test="status == null">AND status != 'deleted'</if>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="deliveryNo != null and deliveryNo != ''">AND delivery_no = #{deliveryNo, jdbcType=VARCHAR}</if>
+            <if test="orderNo != null and orderNo != ''">AND order_no = #{orderNo, jdbcType=VARCHAR}</if>
+            <if test="area != null and area != ''">AND area = #{area, jdbcType=VARCHAR}</if>
+            <if test="warehouseId != null">AND warehouse_id = #{warehouseId, jdbcType=BIGINT}</if>
+            <if test="warehouse != null and warehouse != ''">AND warehouse = #{warehouse, jdbcType=VARCHAR}</if>
+            <if test="customerName != null and customerName != ''">AND customer_name = #{customerName, jdbcType=VARCHAR}</if>
+            <if test="customerAddress != null and customerAddress != ''">AND customer_address = #{customerAddress, jdbcType=VARCHAR}</if>
+            <if test="appointmentDate != null">AND appointment_date = #{appointmentDate, jdbcType=DATE}</if>
+            <if test="appointmentTime != null and appointmentTime != ''">AND appointment_time = #{appointmentTime, jdbcType=VARCHAR}</if>
+            <if test="itemSummary != null and itemSummary != ''">AND item_summary = #{itemSummary, jdbcType=VARCHAR}</if>
+            <if test="quantity != null">AND quantity = #{quantity, jdbcType=INTEGER}</if>
+            <if test="volume != null">AND volume = #{volume, jdbcType=DECIMAL}</if>
+            <if test="weight != null">AND weight = #{weight, jdbcType=DECIMAL}</if>
+            <if test="driverName != null and driverName != ''">AND driver_name = #{driverName, jdbcType=VARCHAR}</if>
+            <if test="driverMobile != null and driverMobile != ''">AND driver_mobile = #{driverMobile, jdbcType=VARCHAR}</if>
+            <if test="status != null and status != ''">AND status = #{status, jdbcType=VARCHAR}</if>
+            <if test="shippedAt != null">AND shipped_at = #{shippedAt, jdbcType=TIMESTAMP}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+            <if test="updatedAt != null">AND updated_at = #{updatedAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_fulfillments WHERE id = #{id, jdbcType=BIGINT} AND status != 'deleted'
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_fulfillments
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+        AND status != 'deleted'
+    </select>
+
+    <update id="deleteById">
+        UPDATE supplier_fulfillments SET status = 'deleted' WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteByIds">
+        UPDATE supplier_fulfillments SET status = 'deleted' WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </update>
+
+    <select id="selectClientFulfillments" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_fulfillments
+        <where>
+            AND status != 'deleted'
+            <if test="orderNo != null and orderNo != ''">AND order_no = #{orderNo, jdbcType=VARCHAR}</if>
+            <if test="status != null and status != '' and status != 'all'">AND status = #{status, jdbcType=VARCHAR}</if>
+        </where>
+        ORDER BY appointment_date DESC, id DESC
+        <if test="offset != null and pageSize != null">
+            LIMIT #{offset, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="countClientFulfillments" resultType="int">
+        SELECT COUNT(1)
+        FROM supplier_fulfillments
+        <where>
+            AND status != 'deleted'
+            <if test="orderNo != null and orderNo != ''">AND order_no = #{orderNo, jdbcType=VARCHAR}</if>
+            <if test="status != null and status != '' and status != 'all'">AND status = #{status, jdbcType=VARCHAR}</if>
+        </where>
+    </select>
+
+    <select id="selectClientFulfillmentByOrderNo" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_fulfillments
+        WHERE order_no = #{orderNo, jdbcType=VARCHAR}
+          AND status != 'deleted'
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+</mapper>

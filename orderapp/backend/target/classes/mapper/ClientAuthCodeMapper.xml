@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.ClientAuthCodeMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.ClientAuthCode">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="expired_at" property="expiredAt" jdbcType="TIMESTAMP" />
+        <result column="used" property="used" jdbcType="BOOLEAN" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, mobile, code, expired_at, used, created_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.ClientAuthCode" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO client_auth_codes (mobile, code, expired_at, used, created_at)
+        VALUES (#{mobile, jdbcType=VARCHAR}, #{code, jdbcType=VARCHAR}, #{expiredAt, jdbcType=TIMESTAMP}, #{used, jdbcType=BOOLEAN}, #{createdAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO client_auth_codes (mobile, code, expired_at, used, created_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.mobile, jdbcType=VARCHAR}, #{item.code, jdbcType=VARCHAR}, #{item.expiredAt, jdbcType=TIMESTAMP}, #{item.used, jdbcType=BOOLEAN}, #{item.createdAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.ClientAuthCode">
+        UPDATE client_auth_codes
+        <set>
+            <if test="mobile != null">mobile = #{mobile, jdbcType=VARCHAR},</if>
+            <if test="code != null">code = #{code, jdbcType=VARCHAR},</if>
+            <if test="expiredAt != null">expired_at = #{expiredAt, jdbcType=TIMESTAMP},</if>
+            <if test="used != null">used = #{used, jdbcType=BOOLEAN},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.ClientAuthCode">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_auth_codes
+        <where>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="mobile != null and mobile != ''">AND mobile = #{mobile, jdbcType=VARCHAR}</if>
+            <if test="code != null and code != ''">AND code = #{code, jdbcType=VARCHAR}</if>
+            <if test="expiredAt != null">AND expired_at = #{expiredAt, jdbcType=TIMESTAMP}</if>
+            <if test="used != null">AND used = #{used, jdbcType=BOOLEAN}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_auth_codes WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_auth_codes
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM client_auth_codes WHERE id = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByIds">
+        DELETE FROM client_auth_codes WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </delete>
+
+</mapper>

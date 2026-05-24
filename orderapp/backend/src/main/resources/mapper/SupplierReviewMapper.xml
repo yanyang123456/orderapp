@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.SupplierReviewMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.SupplierReview">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="review_type" property="reviewType" jdbcType="VARCHAR" />
+        <result column="biz_id" property="bizId" jdbcType="BIGINT" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="reject_reason" property="rejectReason" jdbcType="VARCHAR" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, supplier_id, review_type, biz_id, title, status, reject_reason, created_at, updated_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.SupplierReview" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO supplier_reviews (supplier_id, review_type, biz_id, title, status, reject_reason, created_at, updated_at)
+        VALUES (#{supplierId, jdbcType=BIGINT}, #{reviewType, jdbcType=VARCHAR}, #{bizId, jdbcType=BIGINT}, #{title, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{rejectReason, jdbcType=VARCHAR}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO supplier_reviews (supplier_id, review_type, biz_id, title, status, reject_reason, created_at, updated_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.supplierId, jdbcType=BIGINT}, #{item.reviewType, jdbcType=VARCHAR}, #{item.bizId, jdbcType=BIGINT}, #{item.title, jdbcType=VARCHAR}, #{item.status, jdbcType=VARCHAR}, #{item.rejectReason, jdbcType=VARCHAR}, #{item.createdAt, jdbcType=TIMESTAMP}, #{item.updatedAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.SupplierReview">
+        UPDATE supplier_reviews
+        <set>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="reviewType != null">review_type = #{reviewType, jdbcType=VARCHAR},</if>
+            <if test="bizId != null">biz_id = #{bizId, jdbcType=BIGINT},</if>
+            <if test="title != null">title = #{title, jdbcType=VARCHAR},</if>
+            <if test="status != null">status = #{status, jdbcType=VARCHAR},</if>
+            <if test="rejectReason != null">reject_reason = #{rejectReason, jdbcType=VARCHAR},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.SupplierReview">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_reviews
+        <where>
+            <if test="status == null">AND status != 'deleted'</if>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="reviewType != null and reviewType != ''">AND review_type = #{reviewType, jdbcType=VARCHAR}</if>
+            <if test="bizId != null">AND biz_id = #{bizId, jdbcType=BIGINT}</if>
+            <if test="title != null and title != ''">AND title = #{title, jdbcType=VARCHAR}</if>
+            <if test="status != null and status != ''">AND status = #{status, jdbcType=VARCHAR}</if>
+            <if test="rejectReason != null and rejectReason != ''">AND reject_reason = #{rejectReason, jdbcType=VARCHAR}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+            <if test="updatedAt != null">AND updated_at = #{updatedAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_reviews WHERE id = #{id, jdbcType=BIGINT} AND status != 'deleted'
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_reviews
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+        AND status != 'deleted'
+    </select>
+
+    <update id="deleteById">
+        UPDATE supplier_reviews SET status = 'deleted' WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteByIds">
+        UPDATE supplier_reviews SET status = 'deleted' WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </update>
+
+</mapper>

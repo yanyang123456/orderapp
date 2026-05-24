@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>供应商 App 原型总览</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <style>
+      .index-title {
+        max-width: 1180px;
+        margin: 0 auto 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: 18px;
+      }
+      .index-title h1 {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+      .index-title p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        max-width: 760px;
+        line-height: 1.6;
+      }
+      .index-note {
+        background: rgba(255,255,255,0.68);
+        border: 1px solid rgba(255,255,255,0.72);
+        border-radius: 18px;
+        padding: 14px 16px;
+        box-shadow: var(--shadow-soft);
+        color: #334155;
+        font-size: 13px;
+        line-height: 1.55;
+        max-width: 340px;
+      }
+      .index-note strong { color: var(--text); }
+      iframe {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        border-radius: 36px;
+        background: transparent;
+      }
+      .frame-wrap {
+        height: 860px;
+      }
+      .frame-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 6px 12px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+      .frame-label strong { color: var(--text); }
+      .section-heading {
+        max-width: 1180px;
+        margin: 26px auto 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .section-heading h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 800;
+      }
+      .section-heading span {
+        color: var(--muted);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-wrap">
+      <div class="index-title">
+        <div>
+          <h1>家具供应商 App 高保真原型</h1>
+          <p>
+            基于供应商需求文档，覆盖钱包、商品建档、报价审核、履约发货、安装确认、售后处理、审核状态与经营数据等核心场景，
+            以 iPhone 15 Pro 视觉尺寸进行平铺展示，便于直接预览与开发参考。
+          </p>
+        </div>
+        <div class="index-note">
+          <strong>使用方式</strong><br />
+          每个页面均为独立 HTML 文件，当前首页通过 iframe 平铺展示，适合快速检查完整体验与视觉风格。
+        </div>
+      </div>
+
+      <div class="section-heading">
+        <h2>核心页面总览</h2>
+        <span>共 9 个场景页面</span>
+      </div>
+
+      <div class="index-grid">
+        <div class="preview-card">
+          <div class="frame-label"><strong>首页 / 工作台</strong><span>home.html</span></div>
+          <div class="frame-wrap"><iframe src="home.html" title="home"></iframe></div>
+        </div>
+        <div class="preview-card">
+          <div class="frame-label"><strong>钱包 / 收入结算</strong><span>wallet.html</span></div>
+          <div class="frame-wrap"><iframe src="wallet.html" title="wallet"></iframe></div>
+        </div>
+        <div class="preview-card">
+          <div class="frame-label"><strong>商品建档</strong><span>product-form.html</span></div>
+          <div class="frame-wrap"><iframe src="product-form.html" title="product form"></iframe></div>
+        </div>
+        <div class="preview-card">
+          <div class="frame-label"><strong>报价与改价审核</strong><span>quote.html</span></div>
+          <div class="frame-wrap"><iframe src="quote.html" title="quote"></iframe></div>
+        </div>
+        <div class="preview-card">
+          <div class="frame-label"><strong>履约发货</strong><span>fulfillment.html</span></div>
+          <div class="frame-wrap"><iframe src="fulfillment.html" title="fulfillment"></iframe></div>
+        </div>
+        <div class="preview-card">
+          <div class="frame-label"><strong>安装确认</strong><span>installation.html</span></div>
+          <div class="frame-wrap"><iframe src="installation.html" title="installation"></iframe></div>
+        </div>
+        <div class="preview-card">
+          <div class="frame-label"><strong>售后工单</strong><span>aftersales.html</span></div>
+          <div class="frame-wrap"><iframe src="aftersales.html" title="aftersales"></iframe></div>
+        </div>
+        <div class="preview-card">
+          <div class="frame-label"><strong>审核中心</strong><span>review.html</span></div>
+          <div class="frame-wrap"><iframe src="review.html" title="review"></iframe></div>
+        </div>
+        <div class="preview-card">
+          <div class="frame-label"><strong>经营数据</strong><span>analytics.html</span></div>
+          <div class="frame-wrap"><iframe src="analytics.html" title="analytics"></iframe></div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

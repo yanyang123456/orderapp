@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.ClientAddressMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.ClientAddress">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+        <result column="receiver_mobile" property="receiverMobile" jdbcType="VARCHAR" />
+        <result column="province" property="province" jdbcType="VARCHAR" />
+        <result column="city" property="city" jdbcType="VARCHAR" />
+        <result column="district" property="district" jdbcType="VARCHAR" />
+        <result column="detail_address" property="detailAddress" jdbcType="VARCHAR" />
+        <result column="is_default" property="isDefault" jdbcType="BOOLEAN" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, user_id, receiver_name, receiver_mobile, province, city, district, detail_address, is_default, status, created_at, updated_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.ClientAddress" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO client_addresses (user_id, receiver_name, receiver_mobile, province, city, district, detail_address, is_default, status, created_at, updated_at)
+        VALUES (#{userId, jdbcType=BIGINT}, #{receiverName, jdbcType=VARCHAR}, #{receiverMobile, jdbcType=VARCHAR}, #{province, jdbcType=VARCHAR}, #{city, jdbcType=VARCHAR}, #{district, jdbcType=VARCHAR}, #{detailAddress, jdbcType=VARCHAR}, #{isDefault, jdbcType=BOOLEAN}, #{status, jdbcType=VARCHAR}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO client_addresses (user_id, receiver_name, receiver_mobile, province, city, district, detail_address, is_default, status, created_at, updated_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userId, jdbcType=BIGINT}, #{item.receiverName, jdbcType=VARCHAR}, #{item.receiverMobile, jdbcType=VARCHAR}, #{item.province, jdbcType=VARCHAR}, #{item.city, jdbcType=VARCHAR}, #{item.district, jdbcType=VARCHAR}, #{item.detailAddress, jdbcType=VARCHAR}, #{item.isDefault, jdbcType=BOOLEAN}, #{item.status, jdbcType=VARCHAR}, #{item.createdAt, jdbcType=TIMESTAMP}, #{item.updatedAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.ClientAddress">
+        UPDATE client_addresses
+        <set>
+            <if test="userId != null">user_id = #{userId, jdbcType=BIGINT},</if>
+            <if test="receiverName != null">receiver_name = #{receiverName, jdbcType=VARCHAR},</if>
+            <if test="receiverMobile != null">receiver_mobile = #{receiverMobile, jdbcType=VARCHAR},</if>
+            <if test="province != null">province = #{province, jdbcType=VARCHAR},</if>
+            <if test="city != null">city = #{city, jdbcType=VARCHAR},</if>
+            <if test="district != null">district = #{district, jdbcType=VARCHAR},</if>
+            <if test="detailAddress != null">detail_address = #{detailAddress, jdbcType=VARCHAR},</if>
+            <if test="isDefault != null">is_default = #{isDefault, jdbcType=BOOLEAN},</if>
+            <if test="status != null">status = #{status, jdbcType=VARCHAR},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.ClientAddress">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_addresses
+        <where>
+            <if test="status == null">AND status != 'deleted'</if>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="userId != null">AND user_id = #{userId, jdbcType=BIGINT}</if>
+            <if test="receiverName != null and receiverName != ''">AND receiver_name = #{receiverName, jdbcType=VARCHAR}</if>
+            <if test="receiverMobile != null and receiverMobile != ''">AND receiver_mobile = #{receiverMobile, jdbcType=VARCHAR}</if>
+            <if test="province != null and province != ''">AND province = #{province, jdbcType=VARCHAR}</if>
+            <if test="city != null and city != ''">AND city = #{city, jdbcType=VARCHAR}</if>
+            <if test="district != null and district != ''">AND district = #{district, jdbcType=VARCHAR}</if>
+            <if test="detailAddress != null and detailAddress != ''">AND detail_address = #{detailAddress, jdbcType=VARCHAR}</if>
+            <if test="isDefault != null">AND is_default = #{isDefault, jdbcType=BOOLEAN}</if>
+            <if test="status != null and status != ''">AND status = #{status, jdbcType=VARCHAR}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+            <if test="updatedAt != null">AND updated_at = #{updatedAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_addresses WHERE id = #{id, jdbcType=BIGINT} AND status != 'deleted'
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_addresses
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+        AND status != 'deleted'
+    </select>
+
+    <update id="deleteById">
+        UPDATE client_addresses SET status = 'deleted' WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteByIds">
+        UPDATE client_addresses SET status = 'deleted' WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </update>
+
+</mapper>

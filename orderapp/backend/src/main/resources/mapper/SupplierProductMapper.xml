@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.SupplierProductMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.SupplierProduct">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="images" property="images" jdbcType="VARCHAR" />
+        <result column="category_id" property="categoryId" jdbcType="BIGINT" />
+        <result column="category" property="category" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="material" property="material" jdbcType="VARCHAR" />
+        <result column="color" property="color" jdbcType="VARCHAR" />
+        <result column="size" property="size" jdbcType="VARCHAR" />
+        <result column="model" property="model" jdbcType="VARCHAR" />
+        <result column="style" property="style" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="DECIMAL" />
+        <result column="stock" property="stock" jdbcType="INTEGER" />
+        <result column="spot_stock" property="spotStock" jdbcType="INTEGER" />
+        <result column="presale_cycle_days" property="presaleCycleDays" jdbcType="INTEGER" />
+        <result column="custom_cycle_days" property="customCycleDays" jdbcType="INTEGER" />
+        <result column="min_order_quantity" property="minOrderQuantity" jdbcType="INTEGER" />
+        <result column="delivery_areas" property="deliveryAreas" jdbcType="VARCHAR" />
+        <result column="package_info" property="packageInfo" jdbcType="VARCHAR" />
+        <result column="support_installation" property="supportInstallation" jdbcType="BOOLEAN" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="review_status" property="reviewStatus" jdbcType="VARCHAR" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, supplier_id, name, images, category_id, category, description, material, color, size, model, style, price, stock, spot_stock, presale_cycle_days, custom_cycle_days, min_order_quantity, delivery_areas, package_info, support_installation, status, review_status, created_at, updated_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.SupplierProduct" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO supplier_products (supplier_id, name, images, category_id, category, description, material, color, size, model, style, price, stock, spot_stock, presale_cycle_days, custom_cycle_days, min_order_quantity, delivery_areas, package_info, support_installation, status, review_status, created_at, updated_at)
+        VALUES (#{supplierId, jdbcType=BIGINT}, #{name, jdbcType=VARCHAR}, #{images, jdbcType=VARCHAR}, #{categoryId, jdbcType=BIGINT}, #{category, jdbcType=VARCHAR}, #{description, jdbcType=VARCHAR}, #{material, jdbcType=VARCHAR}, #{color, jdbcType=VARCHAR}, #{size, jdbcType=VARCHAR}, #{model, jdbcType=VARCHAR}, #{style, jdbcType=VARCHAR}, #{price, jdbcType=DECIMAL}, #{stock, jdbcType=INTEGER}, #{spotStock, jdbcType=INTEGER}, #{presaleCycleDays, jdbcType=INTEGER}, #{customCycleDays, jdbcType=INTEGER}, #{minOrderQuantity, jdbcType=INTEGER}, #{deliveryAreas, jdbcType=VARCHAR}, #{packageInfo, jdbcType=VARCHAR}, #{supportInstallation, jdbcType=BOOLEAN}, #{status, jdbcType=VARCHAR}, #{reviewStatus, jdbcType=VARCHAR}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO supplier_products (supplier_id, name, images, category_id, category, description, material, color, size, model, style, price, stock, spot_stock, presale_cycle_days, custom_cycle_days, min_order_quantity, delivery_areas, package_info, support_installation, status, review_status, created_at, updated_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.supplierId, jdbcType=BIGINT}, #{item.name, jdbcType=VARCHAR}, #{item.images, jdbcType=VARCHAR}, #{item.categoryId, jdbcType=BIGINT}, #{item.category, jdbcType=VARCHAR}, #{item.description, jdbcType=VARCHAR}, #{item.material, jdbcType=VARCHAR}, #{item.color, jdbcType=VARCHAR}, #{item.size, jdbcType=VARCHAR}, #{item.model, jdbcType=VARCHAR}, #{item.style, jdbcType=VARCHAR}, #{item.price, jdbcType=DECIMAL}, #{item.stock, jdbcType=INTEGER}, #{item.spotStock, jdbcType=INTEGER}, #{item.presaleCycleDays, jdbcType=INTEGER}, #{item.customCycleDays, jdbcType=INTEGER}, #{item.minOrderQuantity, jdbcType=INTEGER}, #{item.deliveryAreas, jdbcType=VARCHAR}, #{item.packageInfo, jdbcType=VARCHAR}, #{item.supportInstallation, jdbcType=BOOLEAN}, #{item.status, jdbcType=VARCHAR}, #{item.reviewStatus, jdbcType=VARCHAR}, #{item.createdAt, jdbcType=TIMESTAMP}, #{item.updatedAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.SupplierProduct">
+        UPDATE supplier_products
+        <set>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="name != null">name = #{name, jdbcType=VARCHAR},</if>
+            <if test="images != null">images = #{images, jdbcType=VARCHAR},</if>
+            <if test="categoryId != null">category_id = #{categoryId, jdbcType=BIGINT},</if>
+            <if test="category != null">category = #{category, jdbcType=VARCHAR},</if>
+            <if test="description != null">description = #{description, jdbcType=VARCHAR},</if>
+            <if test="material != null">material = #{material, jdbcType=VARCHAR},</if>
+            <if test="color != null">color = #{color, jdbcType=VARCHAR},</if>
+            <if test="size != null">size = #{size, jdbcType=VARCHAR},</if>
+            <if test="model != null">model = #{model, jdbcType=VARCHAR},</if>
+            <if test="style != null">style = #{style, jdbcType=VARCHAR},</if>
+            <if test="price != null">price = #{price, jdbcType=DECIMAL},</if>
+            <if test="stock != null">stock = #{stock, jdbcType=INTEGER},</if>
+            <if test="spotStock != null">spot_stock = #{spotStock, jdbcType=INTEGER},</if>
+            <if test="presaleCycleDays != null">presale_cycle_days = #{presaleCycleDays, jdbcType=INTEGER},</if>
+            <if test="customCycleDays != null">custom_cycle_days = #{customCycleDays, jdbcType=INTEGER},</if>
+            <if test="minOrderQuantity != null">min_order_quantity = #{minOrderQuantity, jdbcType=INTEGER},</if>
+            <if test="deliveryAreas != null">delivery_areas = #{deliveryAreas, jdbcType=VARCHAR},</if>
+            <if test="packageInfo != null">package_info = #{packageInfo, jdbcType=VARCHAR},</if>
+            <if test="supportInstallation != null">support_installation = #{supportInstallation, jdbcType=BOOLEAN},</if>
+            <if test="status != null">status = #{status, jdbcType=VARCHAR},</if>
+            <if test="reviewStatus != null">review_status = #{reviewStatus, jdbcType=VARCHAR},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.SupplierProduct">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_products
+        <where>
+            <if test="status == null">AND status != 'deleted'</if>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="name != null and name != ''">AND name = #{name, jdbcType=VARCHAR}</if>
+            <if test="images != null and images != ''">AND images = #{images, jdbcType=VARCHAR}</if>
+            <if test="categoryId != null">AND category_id = #{categoryId, jdbcType=BIGINT}</if>
+            <if test="category != null and category != ''">AND category = #{category, jdbcType=VARCHAR}</if>
+            <if test="description != null and description != ''">AND description = #{description, jdbcType=VARCHAR}</if>
+            <if test="material != null and material != ''">AND material = #{material, jdbcType=VARCHAR}</if>
+            <if test="color != null and color != ''">AND color = #{color, jdbcType=VARCHAR}</if>
+            <if test="size != null and size != ''">AND size = #{size, jdbcType=VARCHAR}</if>
+            <if test="model != null and model != ''">AND model = #{model, jdbcType=VARCHAR}</if>
+            <if test="style != null and style != ''">AND style = #{style, jdbcType=VARCHAR}</if>
+            <if test="price != null">AND price = #{price, jdbcType=DECIMAL}</if>
+            <if test="stock != null">AND stock = #{stock, jdbcType=INTEGER}</if>
+            <if test="spotStock != null">AND spot_stock = #{spotStock, jdbcType=INTEGER}</if>
+            <if test="presaleCycleDays != null">AND presale_cycle_days = #{presaleCycleDays, jdbcType=INTEGER}</if>
+            <if test="customCycleDays != null">AND custom_cycle_days = #{customCycleDays, jdbcType=INTEGER}</if>
+            <if test="minOrderQuantity != null">AND min_order_quantity = #{minOrderQuantity, jdbcType=INTEGER}</if>
+            <if test="deliveryAreas != null and deliveryAreas != ''">AND delivery_areas = #{deliveryAreas, jdbcType=VARCHAR}</if>
+            <if test="packageInfo != null and packageInfo != ''">AND package_info = #{packageInfo, jdbcType=VARCHAR}</if>
+            <if test="supportInstallation != null">AND support_installation = #{supportInstallation, jdbcType=BOOLEAN}</if>
+            <if test="status != null and status != ''">AND status = #{status, jdbcType=VARCHAR}</if>
+            <if test="reviewStatus != null and reviewStatus != ''">AND review_status = #{reviewStatus, jdbcType=VARCHAR}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+            <if test="updatedAt != null">AND updated_at = #{updatedAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_products WHERE id = #{id, jdbcType=BIGINT} AND status != 'deleted'
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_products
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+        AND status != 'deleted'
+    </select>
+
+    <update id="deleteById">
+        UPDATE supplier_products SET status = 'deleted' WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteByIds">
+        UPDATE supplier_products SET status = 'deleted' WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </update>
+
+    <select id="selectClientProducts" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_products
+        <where>
+            AND status = 'active'
+            AND review_status = 'approved'
+            AND stock &gt; 0
+            <if test="keyword != null and keyword != ''">
+                AND (name LIKE CONCAT('%', #{keyword}, '%') OR material LIKE CONCAT('%', #{keyword}, '%') OR style LIKE CONCAT('%', #{keyword}, '%') OR category LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="categoryId != null">AND category_id = #{categoryId, jdbcType=BIGINT}</if>
+            <if test="category != null and category != ''">AND category = #{category, jdbcType=VARCHAR}</if>
+            <if test="minPrice != null">AND price &gt;= #{minPrice, jdbcType=DECIMAL}</if>
+            <if test="maxPrice != null">AND price &lt;= #{maxPrice, jdbcType=DECIMAL}</if>
+            <if test="material != null and material != ''">AND material = #{material, jdbcType=VARCHAR}</if>
+            <if test="style != null and style != ''">AND style = #{style, jdbcType=VARCHAR}</if>
+            <if test="supportInstallation != null">AND support_installation = #{supportInstallation, jdbcType=BOOLEAN}</if>
+        </where>
+        ORDER BY updated_at DESC, id DESC
+        <if test="offset != null and pageSize != null">
+            LIMIT #{offset, jdbcType=INTEGER}, #{pageSize, jdbcType=INTEGER}
+        </if>
+    </select>
+
+    <select id="countClientProducts" resultType="int">
+        SELECT COUNT(1)
+        FROM supplier_products
+        <where>
+            AND status = 'active'
+            AND review_status = 'approved'
+            AND stock &gt; 0
+            <if test="keyword != null and keyword != ''">
+                AND (name LIKE CONCAT('%', #{keyword}, '%') OR material LIKE CONCAT('%', #{keyword}, '%') OR style LIKE CONCAT('%', #{keyword}, '%') OR category LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+            <if test="categoryId != null">AND category_id = #{categoryId, jdbcType=BIGINT}</if>
+            <if test="category != null and category != ''">AND category = #{category, jdbcType=VARCHAR}</if>
+            <if test="minPrice != null">AND price &gt;= #{minPrice, jdbcType=DECIMAL}</if>
+            <if test="maxPrice != null">AND price &lt;= #{maxPrice, jdbcType=DECIMAL}</if>
+            <if test="material != null and material != ''">AND material = #{material, jdbcType=VARCHAR}</if>
+            <if test="style != null and style != ''">AND style = #{style, jdbcType=VARCHAR}</if>
+            <if test="supportInstallation != null">AND support_installation = #{supportInstallation, jdbcType=BOOLEAN}</if>
+        </where>
+    </select>
+
+    <select id="selectClientProductById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_products
+        WHERE id = #{id, jdbcType=BIGINT}
+          AND status = 'active'
+          AND review_status = 'approved'
+          AND stock &gt; 0
+    </select>
+
+    <select id="selectClientCategories" resultType="map">
+        SELECT MIN(category_id) AS id, category AS name, category AS icon, COUNT(1) AS product_count
+        FROM supplier_products
+        WHERE status = 'active'
+          AND review_status = 'approved'
+          AND stock &gt; 0
+          AND category IS NOT NULL
+          AND category != ''
+        GROUP BY category
+        ORDER BY product_count DESC, name ASC
+    </select>
+
+    <select id="selectClientHotProducts" resultMap="BaseResultMap">
+        SELECT p.*
+        FROM supplier_products p
+        LEFT JOIN supplier_product_metrics m ON m.product_id = p.id
+        WHERE p.status = 'active'
+          AND p.review_status = 'approved'
+          AND p.stock &gt; 0
+        ORDER BY COALESCE(m.orders, 0) DESC, COALESCE(m.sales_amount, 0) DESC, p.updated_at DESC, p.id DESC
+        LIMIT #{limit, jdbcType=INTEGER}
+    </select>
+
+    <update id="deductStock">
+        UPDATE supplier_products
+        SET stock = stock - #{quantity, jdbcType=INTEGER},
+            spot_stock = CASE WHEN spot_stock &gt;= #{quantity, jdbcType=INTEGER} THEN spot_stock - #{quantity, jdbcType=INTEGER} ELSE spot_stock END
+        WHERE id = #{id, jdbcType=BIGINT}
+          AND stock &gt;= #{quantity, jdbcType=INTEGER}
+          AND status = 'active'
+          AND review_status = 'approved'
+    </update>
+
+</mapper>

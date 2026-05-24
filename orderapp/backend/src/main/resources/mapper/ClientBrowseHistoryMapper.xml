@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.ClientBrowseHistoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.ClientBrowseHistory">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="product_id" property="productId" jdbcType="BIGINT" />
+        <result column="product_name" property="productName" jdbcType="VARCHAR" />
+        <result column="product_image" property="productImage" jdbcType="VARCHAR" />
+        <result column="viewed_at" property="viewedAt" jdbcType="TIMESTAMP" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, user_id, supplier_id, product_id, product_name, product_image, viewed_at, created_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.ClientBrowseHistory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO client_browse_history (user_id, supplier_id, product_id, product_name, product_image, viewed_at, created_at)
+        VALUES (#{userId, jdbcType=BIGINT}, #{supplierId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{productName, jdbcType=VARCHAR}, #{productImage, jdbcType=VARCHAR}, #{viewedAt, jdbcType=TIMESTAMP}, #{createdAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO client_browse_history (user_id, supplier_id, product_id, product_name, product_image, viewed_at, created_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userId, jdbcType=BIGINT}, #{item.supplierId, jdbcType=BIGINT}, #{item.productId, jdbcType=BIGINT}, #{item.productName, jdbcType=VARCHAR}, #{item.productImage, jdbcType=VARCHAR}, #{item.viewedAt, jdbcType=TIMESTAMP}, #{item.createdAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.ClientBrowseHistory">
+        UPDATE client_browse_history
+        <set>
+            <if test="userId != null">user_id = #{userId, jdbcType=BIGINT},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="productId != null">product_id = #{productId, jdbcType=BIGINT},</if>
+            <if test="productName != null">product_name = #{productName, jdbcType=VARCHAR},</if>
+            <if test="productImage != null">product_image = #{productImage, jdbcType=VARCHAR},</if>
+            <if test="viewedAt != null">viewed_at = #{viewedAt, jdbcType=TIMESTAMP},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.ClientBrowseHistory">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_browse_history
+        <where>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="userId != null">AND user_id = #{userId, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="productId != null">AND product_id = #{productId, jdbcType=BIGINT}</if>
+            <if test="productName != null and productName != ''">AND product_name = #{productName, jdbcType=VARCHAR}</if>
+            <if test="productImage != null and productImage != ''">AND product_image = #{productImage, jdbcType=VARCHAR}</if>
+            <if test="viewedAt != null">AND viewed_at = #{viewedAt, jdbcType=TIMESTAMP}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_browse_history WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_browse_history
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM client_browse_history WHERE id = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByIds">
+        DELETE FROM client_browse_history WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </delete>
+
+</mapper>

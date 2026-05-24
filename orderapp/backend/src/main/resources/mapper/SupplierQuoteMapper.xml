@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.SupplierQuoteMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.SupplierQuote">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="product_id" property="productId" jdbcType="BIGINT" />
+        <result column="current_price" property="currentPrice" jdbcType="DECIMAL" />
+        <result column="new_price" property="newPrice" jdbcType="DECIMAL" />
+        <result column="reason" property="reason" jdbcType="VARCHAR" />
+        <result column="attachments" property="attachments" jdbcType="VARCHAR" />
+        <result column="review_status" property="reviewStatus" jdbcType="VARCHAR" />
+        <result column="reject_reason" property="rejectReason" jdbcType="VARCHAR" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, supplier_id, product_id, current_price, new_price, reason, attachments, review_status, reject_reason, created_at, updated_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.SupplierQuote" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO supplier_quotes (supplier_id, product_id, current_price, new_price, reason, attachments, review_status, reject_reason, created_at, updated_at)
+        VALUES (#{supplierId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{currentPrice, jdbcType=DECIMAL}, #{newPrice, jdbcType=DECIMAL}, #{reason, jdbcType=VARCHAR}, #{attachments, jdbcType=VARCHAR}, #{reviewStatus, jdbcType=VARCHAR}, #{rejectReason, jdbcType=VARCHAR}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO supplier_quotes (supplier_id, product_id, current_price, new_price, reason, attachments, review_status, reject_reason, created_at, updated_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.supplierId, jdbcType=BIGINT}, #{item.productId, jdbcType=BIGINT}, #{item.currentPrice, jdbcType=DECIMAL}, #{item.newPrice, jdbcType=DECIMAL}, #{item.reason, jdbcType=VARCHAR}, #{item.attachments, jdbcType=VARCHAR}, #{item.reviewStatus, jdbcType=VARCHAR}, #{item.rejectReason, jdbcType=VARCHAR}, #{item.createdAt, jdbcType=TIMESTAMP}, #{item.updatedAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.SupplierQuote">
+        UPDATE supplier_quotes
+        <set>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="productId != null">product_id = #{productId, jdbcType=BIGINT},</if>
+            <if test="currentPrice != null">current_price = #{currentPrice, jdbcType=DECIMAL},</if>
+            <if test="newPrice != null">new_price = #{newPrice, jdbcType=DECIMAL},</if>
+            <if test="reason != null">reason = #{reason, jdbcType=VARCHAR},</if>
+            <if test="attachments != null">attachments = #{attachments, jdbcType=VARCHAR},</if>
+            <if test="reviewStatus != null">review_status = #{reviewStatus, jdbcType=VARCHAR},</if>
+            <if test="rejectReason != null">reject_reason = #{rejectReason, jdbcType=VARCHAR},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.SupplierQuote">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_quotes
+        <where>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="productId != null">AND product_id = #{productId, jdbcType=BIGINT}</if>
+            <if test="currentPrice != null">AND current_price = #{currentPrice, jdbcType=DECIMAL}</if>
+            <if test="newPrice != null">AND new_price = #{newPrice, jdbcType=DECIMAL}</if>
+            <if test="reason != null and reason != ''">AND reason = #{reason, jdbcType=VARCHAR}</if>
+            <if test="attachments != null and attachments != ''">AND attachments = #{attachments, jdbcType=VARCHAR}</if>
+            <if test="reviewStatus != null and reviewStatus != ''">AND review_status = #{reviewStatus, jdbcType=VARCHAR}</if>
+            <if test="rejectReason != null and rejectReason != ''">AND reject_reason = #{rejectReason, jdbcType=VARCHAR}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+            <if test="updatedAt != null">AND updated_at = #{updatedAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_quotes WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_quotes
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM supplier_quotes WHERE id = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByIds">
+        DELETE FROM supplier_quotes WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </delete>
+
+</mapper>

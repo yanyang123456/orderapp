@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.ClientCartItemMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.ClientCartItem">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="product_id" property="productId" jdbcType="BIGINT" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="support_installation" property="supportInstallation" jdbcType="BOOLEAN" />
+        <result column="selected" property="selected" jdbcType="BOOLEAN" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, user_id, supplier_id, product_id, quantity, support_installation, selected, status, created_at, updated_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.ClientCartItem" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO client_cart_items (user_id, supplier_id, product_id, quantity, support_installation, selected, status, created_at, updated_at)
+        VALUES (#{userId, jdbcType=BIGINT}, #{supplierId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{quantity, jdbcType=INTEGER}, #{supportInstallation, jdbcType=BOOLEAN}, #{selected, jdbcType=BOOLEAN}, #{status, jdbcType=VARCHAR}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO client_cart_items (user_id, supplier_id, product_id, quantity, support_installation, selected, status, created_at, updated_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.userId, jdbcType=BIGINT}, #{item.supplierId, jdbcType=BIGINT}, #{item.productId, jdbcType=BIGINT}, #{item.quantity, jdbcType=INTEGER}, #{item.supportInstallation, jdbcType=BOOLEAN}, #{item.selected, jdbcType=BOOLEAN}, #{item.status, jdbcType=VARCHAR}, #{item.createdAt, jdbcType=TIMESTAMP}, #{item.updatedAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.ClientCartItem">
+        UPDATE client_cart_items
+        <set>
+            <if test="userId != null">user_id = #{userId, jdbcType=BIGINT},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="productId != null">product_id = #{productId, jdbcType=BIGINT},</if>
+            <if test="quantity != null">quantity = #{quantity, jdbcType=INTEGER},</if>
+            <if test="supportInstallation != null">support_installation = #{supportInstallation, jdbcType=BOOLEAN},</if>
+            <if test="selected != null">selected = #{selected, jdbcType=BOOLEAN},</if>
+            <if test="status != null">status = #{status, jdbcType=VARCHAR},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.ClientCartItem">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_cart_items
+        <where>
+            <if test="status == null">AND status = 'active'</if>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="userId != null">AND user_id = #{userId, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="productId != null">AND product_id = #{productId, jdbcType=BIGINT}</if>
+            <if test="quantity != null">AND quantity = #{quantity, jdbcType=INTEGER}</if>
+            <if test="supportInstallation != null">AND support_installation = #{supportInstallation, jdbcType=BOOLEAN}</if>
+            <if test="selected != null">AND selected = #{selected, jdbcType=BOOLEAN}</if>
+            <if test="status != null and status != ''">AND status = #{status, jdbcType=VARCHAR}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+            <if test="updatedAt != null">AND updated_at = #{updatedAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_cart_items WHERE id = #{id, jdbcType=BIGINT} AND status = 'active'
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_cart_items
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+        AND status = 'active'
+    </select>
+
+    <select id="selectActiveByUserId" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_cart_items
+        WHERE user_id = #{userId, jdbcType=BIGINT}
+          AND status = 'active'
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectActiveByUserIdAndProductId" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_cart_items
+        WHERE user_id = #{userId, jdbcType=BIGINT}
+          AND product_id = #{productId, jdbcType=BIGINT}
+          AND status = 'active'
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+    <select id="countActiveByUserId" resultType="int">
+        SELECT COUNT(1)
+        FROM client_cart_items
+        WHERE user_id = #{userId, jdbcType=BIGINT}
+          AND status = 'active'
+    </select>
+
+    <update id="deleteActiveByUserId">
+        UPDATE client_cart_items SET status = CONCAT('deleted_', id) WHERE user_id = #{userId, jdbcType=BIGINT} AND status = 'active'
+    </update>
+
+    <update id="deleteById">
+        UPDATE client_cart_items SET status = CONCAT('deleted_', id) WHERE id = #{id, jdbcType=BIGINT} AND status = 'active'
+    </update>
+
+    <update id="deleteByIds">
+        UPDATE client_cart_items SET status = CONCAT('deleted_', id) WHERE status = 'active' AND id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </update>
+
+</mapper>

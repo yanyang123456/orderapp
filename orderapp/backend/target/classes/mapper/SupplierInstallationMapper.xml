@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.SupplierInstallationMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.SupplierInstallation">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="product_summary" property="productSummary" jdbcType="VARCHAR" />
+        <result column="customer_name" property="customerName" jdbcType="VARCHAR" />
+        <result column="customer_address" property="customerAddress" jdbcType="VARCHAR" />
+        <result column="installer_name" property="installerName" jdbcType="VARCHAR" />
+        <result column="installer_mobile" property="installerMobile" jdbcType="VARCHAR" />
+        <result column="appointment_date" property="appointmentDate" jdbcType="DATE" />
+        <result column="appointment_time" property="appointmentTime" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="photos" property="photos" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="completed_at" property="completedAt" jdbcType="TIMESTAMP" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, supplier_id, order_no, product_summary, customer_name, customer_address, installer_name, installer_mobile, appointment_date, appointment_time, status, photos, remark, completed_at, created_at, updated_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.SupplierInstallation" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO supplier_installations (supplier_id, order_no, product_summary, customer_name, customer_address, installer_name, installer_mobile, appointment_date, appointment_time, status, photos, remark, completed_at, created_at, updated_at)
+        VALUES (#{supplierId, jdbcType=BIGINT}, #{orderNo, jdbcType=VARCHAR}, #{productSummary, jdbcType=VARCHAR}, #{customerName, jdbcType=VARCHAR}, #{customerAddress, jdbcType=VARCHAR}, #{installerName, jdbcType=VARCHAR}, #{installerMobile, jdbcType=VARCHAR}, #{appointmentDate, jdbcType=DATE}, #{appointmentTime, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{photos, jdbcType=VARCHAR}, #{remark, jdbcType=VARCHAR}, #{completedAt, jdbcType=TIMESTAMP}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO supplier_installations (supplier_id, order_no, product_summary, customer_name, customer_address, installer_name, installer_mobile, appointment_date, appointment_time, status, photos, remark, completed_at, created_at, updated_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.supplierId, jdbcType=BIGINT}, #{item.orderNo, jdbcType=VARCHAR}, #{item.productSummary, jdbcType=VARCHAR}, #{item.customerName, jdbcType=VARCHAR}, #{item.customerAddress, jdbcType=VARCHAR}, #{item.installerName, jdbcType=VARCHAR}, #{item.installerMobile, jdbcType=VARCHAR}, #{item.appointmentDate, jdbcType=DATE}, #{item.appointmentTime, jdbcType=VARCHAR}, #{item.status, jdbcType=VARCHAR}, #{item.photos, jdbcType=VARCHAR}, #{item.remark, jdbcType=VARCHAR}, #{item.completedAt, jdbcType=TIMESTAMP}, #{item.createdAt, jdbcType=TIMESTAMP}, #{item.updatedAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.SupplierInstallation">
+        UPDATE supplier_installations
+        <set>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="orderNo != null">order_no = #{orderNo, jdbcType=VARCHAR},</if>
+            <if test="productSummary != null">product_summary = #{productSummary, jdbcType=VARCHAR},</if>
+            <if test="customerName != null">customer_name = #{customerName, jdbcType=VARCHAR},</if>
+            <if test="customerAddress != null">customer_address = #{customerAddress, jdbcType=VARCHAR},</if>
+            <if test="installerName != null">installer_name = #{installerName, jdbcType=VARCHAR},</if>
+            <if test="installerMobile != null">installer_mobile = #{installerMobile, jdbcType=VARCHAR},</if>
+            <if test="appointmentDate != null">appointment_date = #{appointmentDate, jdbcType=DATE},</if>
+            <if test="appointmentTime != null">appointment_time = #{appointmentTime, jdbcType=VARCHAR},</if>
+            <if test="status != null">status = #{status, jdbcType=VARCHAR},</if>
+            <if test="photos != null">photos = #{photos, jdbcType=VARCHAR},</if>
+            <if test="remark != null">remark = #{remark, jdbcType=VARCHAR},</if>
+            <if test="completedAt != null">completed_at = #{completedAt, jdbcType=TIMESTAMP},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.SupplierInstallation">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_installations
+        <where>
+            <if test="status == null">AND status != 'deleted'</if>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="orderNo != null and orderNo != ''">AND order_no = #{orderNo, jdbcType=VARCHAR}</if>
+            <if test="productSummary != null and productSummary != ''">AND product_summary = #{productSummary, jdbcType=VARCHAR}</if>
+            <if test="customerName != null and customerName != ''">AND customer_name = #{customerName, jdbcType=VARCHAR}</if>
+            <if test="customerAddress != null and customerAddress != ''">AND customer_address = #{customerAddress, jdbcType=VARCHAR}</if>
+            <if test="installerName != null and installerName != ''">AND installer_name = #{installerName, jdbcType=VARCHAR}</if>
+            <if test="installerMobile != null and installerMobile != ''">AND installer_mobile = #{installerMobile, jdbcType=VARCHAR}</if>
+            <if test="appointmentDate != null">AND appointment_date = #{appointmentDate, jdbcType=DATE}</if>
+            <if test="appointmentTime != null and appointmentTime != ''">AND appointment_time = #{appointmentTime, jdbcType=VARCHAR}</if>
+            <if test="status != null and status != ''">AND status = #{status, jdbcType=VARCHAR}</if>
+            <if test="photos != null and photos != ''">AND photos = #{photos, jdbcType=VARCHAR}</if>
+            <if test="remark != null and remark != ''">AND remark = #{remark, jdbcType=VARCHAR}</if>
+            <if test="completedAt != null">AND completed_at = #{completedAt, jdbcType=TIMESTAMP}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+            <if test="updatedAt != null">AND updated_at = #{updatedAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_installations WHERE id = #{id, jdbcType=BIGINT} AND status != 'deleted'
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_installations
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+        AND status != 'deleted'
+    </select>
+
+    <update id="deleteById">
+        UPDATE supplier_installations SET status = 'deleted' WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteByIds">
+        UPDATE supplier_installations SET status = 'deleted' WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </update>
+
+    <select id="selectClientInstallationByOrderNo" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_installations
+        WHERE order_no = #{orderNo, jdbcType=VARCHAR}
+          AND status != 'deleted'
+        ORDER BY id DESC
+        LIMIT 1
+    </select>
+
+</mapper>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.ClientOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.ClientOrder">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="address_id" property="addressId" jdbcType="BIGINT" />
+        <result column="receiver_name" property="receiverName" jdbcType="VARCHAR" />
+        <result column="receiver_mobile" property="receiverMobile" jdbcType="VARCHAR" />
+        <result column="receiver_address" property="receiverAddress" jdbcType="VARCHAR" />
+        <result column="delivery_method" property="deliveryMethod" jdbcType="VARCHAR" />
+        <result column="appointment_date" property="appointmentDate" jdbcType="DATE" />
+        <result column="appointment_time" property="appointmentTime" jdbcType="VARCHAR" />
+        <result column="product_amount" property="productAmount" jdbcType="DECIMAL" />
+        <result column="delivery_fee" property="deliveryFee" jdbcType="DECIMAL" />
+        <result column="installation_fee" property="installationFee" jdbcType="DECIMAL" />
+        <result column="discount_amount" property="discountAmount" jdbcType="DECIMAL" />
+        <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+        <result column="pay_status" property="payStatus" jdbcType="VARCHAR" />
+        <result column="order_status" property="orderStatus" jdbcType="VARCHAR" />
+        <result column="delivery_status" property="deliveryStatus" jdbcType="VARCHAR" />
+        <result column="installation_status" property="installationStatus" jdbcType="VARCHAR" />
+        <result column="remark" property="remark" jdbcType="VARCHAR" />
+        <result column="paid_at" property="paidAt" jdbcType="TIMESTAMP" />
+        <result column="received_at" property="receivedAt" jdbcType="TIMESTAMP" />
+        <result column="completed_at" property="completedAt" jdbcType="TIMESTAMP" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, order_no, user_id, supplier_id, address_id, receiver_name, receiver_mobile, receiver_address, delivery_method, appointment_date, appointment_time, product_amount, delivery_fee, installation_fee, discount_amount, pay_amount, pay_status, order_status, delivery_status, installation_status, remark, paid_at, received_at, completed_at, created_at, updated_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.ClientOrder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO client_orders (order_no, user_id, supplier_id, address_id, receiver_name, receiver_mobile, receiver_address, delivery_method, appointment_date, appointment_time, product_amount, delivery_fee, installation_fee, discount_amount, pay_amount, pay_status, order_status, delivery_status, installation_status, remark, paid_at, received_at, completed_at, created_at, updated_at)
+        VALUES (#{orderNo, jdbcType=VARCHAR}, #{userId, jdbcType=BIGINT}, #{supplierId, jdbcType=BIGINT}, #{addressId, jdbcType=BIGINT}, #{receiverName, jdbcType=VARCHAR}, #{receiverMobile, jdbcType=VARCHAR}, #{receiverAddress, jdbcType=VARCHAR}, #{deliveryMethod, jdbcType=VARCHAR}, #{appointmentDate, jdbcType=DATE}, #{appointmentTime, jdbcType=VARCHAR}, #{productAmount, jdbcType=DECIMAL}, #{deliveryFee, jdbcType=DECIMAL}, #{installationFee, jdbcType=DECIMAL}, #{discountAmount, jdbcType=DECIMAL}, #{payAmount, jdbcType=DECIMAL}, #{payStatus, jdbcType=VARCHAR}, #{orderStatus, jdbcType=VARCHAR}, #{deliveryStatus, jdbcType=VARCHAR}, #{installationStatus, jdbcType=VARCHAR}, #{remark, jdbcType=VARCHAR}, #{paidAt, jdbcType=TIMESTAMP}, #{receivedAt, jdbcType=TIMESTAMP}, #{completedAt, jdbcType=TIMESTAMP}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO client_orders (order_no, user_id, supplier_id, address_id, receiver_name, receiver_mobile, receiver_address, delivery_method, appointment_date, appointment_time, product_amount, delivery_fee, installation_fee, discount_amount, pay_amount, pay_status, order_status, delivery_status, installation_status, remark, paid_at, received_at, completed_at, created_at, updated_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.orderNo, jdbcType=VARCHAR}, #{item.userId, jdbcType=BIGINT}, #{item.supplierId, jdbcType=BIGINT}, #{item.addressId, jdbcType=BIGINT}, #{item.receiverName, jdbcType=VARCHAR}, #{item.receiverMobile, jdbcType=VARCHAR}, #{item.receiverAddress, jdbcType=VARCHAR}, #{item.deliveryMethod, jdbcType=VARCHAR}, #{item.appointmentDate, jdbcType=DATE}, #{item.appointmentTime, jdbcType=VARCHAR}, #{item.productAmount, jdbcType=DECIMAL}, #{item.deliveryFee, jdbcType=DECIMAL}, #{item.installationFee, jdbcType=DECIMAL}, #{item.discountAmount, jdbcType=DECIMAL}, #{item.payAmount, jdbcType=DECIMAL}, #{item.payStatus, jdbcType=VARCHAR}, #{item.orderStatus, jdbcType=VARCHAR}, #{item.deliveryStatus, jdbcType=VARCHAR}, #{item.installationStatus, jdbcType=VARCHAR}, #{item.remark, jdbcType=VARCHAR}, #{item.paidAt, jdbcType=TIMESTAMP}, #{item.receivedAt, jdbcType=TIMESTAMP}, #{item.completedAt, jdbcType=TIMESTAMP}, #{item.createdAt, jdbcType=TIMESTAMP}, #{item.updatedAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.ClientOrder">
+        UPDATE client_orders
+        <set>
+            <if test="orderNo != null">order_no = #{orderNo, jdbcType=VARCHAR},</if>
+            <if test="userId != null">user_id = #{userId, jdbcType=BIGINT},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="addressId != null">address_id = #{addressId, jdbcType=BIGINT},</if>
+            <if test="receiverName != null">receiver_name = #{receiverName, jdbcType=VARCHAR},</if>
+            <if test="receiverMobile != null">receiver_mobile = #{receiverMobile, jdbcType=VARCHAR},</if>
+            <if test="receiverAddress != null">receiver_address = #{receiverAddress, jdbcType=VARCHAR},</if>
+            <if test="deliveryMethod != null">delivery_method = #{deliveryMethod, jdbcType=VARCHAR},</if>
+            <if test="appointmentDate != null">appointment_date = #{appointmentDate, jdbcType=DATE},</if>
+            <if test="appointmentTime != null">appointment_time = #{appointmentTime, jdbcType=VARCHAR},</if>
+            <if test="productAmount != null">product_amount = #{productAmount, jdbcType=DECIMAL},</if>
+            <if test="deliveryFee != null">delivery_fee = #{deliveryFee, jdbcType=DECIMAL},</if>
+            <if test="installationFee != null">installation_fee = #{installationFee, jdbcType=DECIMAL},</if>
+            <if test="discountAmount != null">discount_amount = #{discountAmount, jdbcType=DECIMAL},</if>
+            <if test="payAmount != null">pay_amount = #{payAmount, jdbcType=DECIMAL},</if>
+            <if test="payStatus != null">pay_status = #{payStatus, jdbcType=VARCHAR},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus, jdbcType=VARCHAR},</if>
+            <if test="deliveryStatus != null">delivery_status = #{deliveryStatus, jdbcType=VARCHAR},</if>
+            <if test="installationStatus != null">installation_status = #{installationStatus, jdbcType=VARCHAR},</if>
+            <if test="remark != null">remark = #{remark, jdbcType=VARCHAR},</if>
+            <if test="paidAt != null">paid_at = #{paidAt, jdbcType=TIMESTAMP},</if>
+            <if test="receivedAt != null">received_at = #{receivedAt, jdbcType=TIMESTAMP},</if>
+            <if test="completedAt != null">completed_at = #{completedAt, jdbcType=TIMESTAMP},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.ClientOrder">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_orders
+        <where>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="orderNo != null and orderNo != ''">AND order_no = #{orderNo, jdbcType=VARCHAR}</if>
+            <if test="userId != null">AND user_id = #{userId, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="addressId != null">AND address_id = #{addressId, jdbcType=BIGINT}</if>
+            <if test="receiverName != null and receiverName != ''">AND receiver_name = #{receiverName, jdbcType=VARCHAR}</if>
+            <if test="receiverMobile != null and receiverMobile != ''">AND receiver_mobile = #{receiverMobile, jdbcType=VARCHAR}</if>
+            <if test="receiverAddress != null and receiverAddress != ''">AND receiver_address = #{receiverAddress, jdbcType=VARCHAR}</if>
+            <if test="deliveryMethod != null and deliveryMethod != ''">AND delivery_method = #{deliveryMethod, jdbcType=VARCHAR}</if>
+            <if test="appointmentDate != null">AND appointment_date = #{appointmentDate, jdbcType=DATE}</if>
+            <if test="appointmentTime != null and appointmentTime != ''">AND appointment_time = #{appointmentTime, jdbcType=VARCHAR}</if>
+            <if test="productAmount != null">AND product_amount = #{productAmount, jdbcType=DECIMAL}</if>
+            <if test="deliveryFee != null">AND delivery_fee = #{deliveryFee, jdbcType=DECIMAL}</if>
+            <if test="installationFee != null">AND installation_fee = #{installationFee, jdbcType=DECIMAL}</if>
+            <if test="discountAmount != null">AND discount_amount = #{discountAmount, jdbcType=DECIMAL}</if>
+            <if test="payAmount != null">AND pay_amount = #{payAmount, jdbcType=DECIMAL}</if>
+            <if test="payStatus != null and payStatus != ''">AND pay_status = #{payStatus, jdbcType=VARCHAR}</if>
+            <if test="orderStatus != null and orderStatus != ''">AND order_status = #{orderStatus, jdbcType=VARCHAR}</if>
+            <if test="deliveryStatus != null and deliveryStatus != ''">AND delivery_status = #{deliveryStatus, jdbcType=VARCHAR}</if>
+            <if test="installationStatus != null and installationStatus != ''">AND installation_status = #{installationStatus, jdbcType=VARCHAR}</if>
+            <if test="remark != null and remark != ''">AND remark = #{remark, jdbcType=VARCHAR}</if>
+            <if test="paidAt != null">AND paid_at = #{paidAt, jdbcType=TIMESTAMP}</if>
+            <if test="receivedAt != null">AND received_at = #{receivedAt, jdbcType=TIMESTAMP}</if>
+            <if test="completedAt != null">AND completed_at = #{completedAt, jdbcType=TIMESTAMP}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+            <if test="updatedAt != null">AND updated_at = #{updatedAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_orders WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_orders
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </select>
+
+    <select id="selectClientOrders" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_orders
+        <where>
+            <if test="userId != null">AND user_id = #{userId, jdbcType=BIGINT}</if>
+            <if test="status != null and status != '' and status != 'all'">AND order_status = #{status, jdbcType=VARCHAR}</if>
+        </where>
+        ORDER BY id DESC
+        LIMIT #{pageSize, jdbcType=INTEGER} OFFSET #{offset, jdbcType=INTEGER}
+    </select>
+
+    <select id="countClientOrders" resultType="int">
+        SELECT COUNT(1)
+        FROM client_orders
+        <where>
+            <if test="userId != null">AND user_id = #{userId, jdbcType=BIGINT}</if>
+            <if test="status != null and status != '' and status != 'all'">AND order_status = #{status, jdbcType=VARCHAR}</if>
+        </where>
+    </select>
+
+    <select id="selectByOrderNo" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_orders
+        WHERE order_no = #{orderNo, jdbcType=VARCHAR}
+        LIMIT 1
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM client_orders WHERE id = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByIds">
+        DELETE FROM client_orders WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </delete>
+
+</mapper>

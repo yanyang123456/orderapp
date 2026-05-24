@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.SupplierProductMetricMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.SupplierProductMetric">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="product_id" property="productId" jdbcType="BIGINT" />
+        <result column="stat_date" property="statDate" jdbcType="DATE" />
+        <result column="views" property="views" jdbcType="INTEGER" />
+        <result column="orders" property="orders" jdbcType="INTEGER" />
+        <result column="sales_amount" property="salesAmount" jdbcType="DECIMAL" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, supplier_id, product_id, stat_date, views, orders, sales_amount, created_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.SupplierProductMetric" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO supplier_product_metrics (supplier_id, product_id, stat_date, views, orders, sales_amount, created_at)
+        VALUES (#{supplierId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{statDate, jdbcType=DATE}, #{views, jdbcType=INTEGER}, #{orders, jdbcType=INTEGER}, #{salesAmount, jdbcType=DECIMAL}, #{createdAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO supplier_product_metrics (supplier_id, product_id, stat_date, views, orders, sales_amount, created_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.supplierId, jdbcType=BIGINT}, #{item.productId, jdbcType=BIGINT}, #{item.statDate, jdbcType=DATE}, #{item.views, jdbcType=INTEGER}, #{item.orders, jdbcType=INTEGER}, #{item.salesAmount, jdbcType=DECIMAL}, #{item.createdAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.SupplierProductMetric">
+        UPDATE supplier_product_metrics
+        <set>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="productId != null">product_id = #{productId, jdbcType=BIGINT},</if>
+            <if test="statDate != null">stat_date = #{statDate, jdbcType=DATE},</if>
+            <if test="views != null">views = #{views, jdbcType=INTEGER},</if>
+            <if test="orders != null">orders = #{orders, jdbcType=INTEGER},</if>
+            <if test="salesAmount != null">sales_amount = #{salesAmount, jdbcType=DECIMAL},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.SupplierProductMetric">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_product_metrics
+        <where>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="productId != null">AND product_id = #{productId, jdbcType=BIGINT}</if>
+            <if test="statDate != null">AND stat_date = #{statDate, jdbcType=DATE}</if>
+            <if test="views != null">AND views = #{views, jdbcType=INTEGER}</if>
+            <if test="orders != null">AND orders = #{orders, jdbcType=INTEGER}</if>
+            <if test="salesAmount != null">AND sales_amount = #{salesAmount, jdbcType=DECIMAL}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_product_metrics WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_product_metrics
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM supplier_product_metrics WHERE id = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByIds">
+        DELETE FROM supplier_product_metrics WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </delete>
+
+    <insert id="upsertOrderMetrics">
+        INSERT INTO supplier_product_metrics (supplier_id, product_id, stat_date, views, orders, sales_amount, created_at)
+        VALUES (#{supplierId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{statDate, jdbcType=DATE}, 0, #{orders, jdbcType=INTEGER}, #{salesAmount, jdbcType=DECIMAL}, NOW())
+        ON DUPLICATE KEY UPDATE
+            orders = orders + VALUES(orders),
+            sales_amount = sales_amount + VALUES(sales_amount)
+    </insert>
+
+</mapper>

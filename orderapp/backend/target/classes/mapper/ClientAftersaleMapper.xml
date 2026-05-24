@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.ClientAftersaleMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.ClientAftersale">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="case_no" property="caseNo" jdbcType="VARCHAR" />
+        <result column="supplier_case_id" property="supplierCaseId" jdbcType="BIGINT" />
+        <result column="order_id" property="orderId" jdbcType="BIGINT" />
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="product_id" property="productId" jdbcType="BIGINT" />
+        <result column="type" property="type" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="solution" property="solution" jdbcType="VARCHAR" />
+        <result column="photos" property="photos" jdbcType="VARCHAR" />
+        <result column="supplier_opinion" property="supplierOpinion" jdbcType="VARCHAR" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="review_status" property="reviewStatus" jdbcType="VARCHAR" />
+        <result column="completed_at" property="completedAt" jdbcType="TIMESTAMP" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, case_no, supplier_case_id, order_id, order_no, user_id, supplier_id, product_id, type, description, solution, photos, supplier_opinion, status, review_status, completed_at, created_at, updated_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.ClientAftersale" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO client_aftersales (case_no, supplier_case_id, order_id, order_no, user_id, supplier_id, product_id, type, description, solution, photos, supplier_opinion, status, review_status, completed_at, created_at, updated_at)
+        VALUES (#{caseNo, jdbcType=VARCHAR}, #{supplierCaseId, jdbcType=BIGINT}, #{orderId, jdbcType=BIGINT}, #{orderNo, jdbcType=VARCHAR}, #{userId, jdbcType=BIGINT}, #{supplierId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{type, jdbcType=VARCHAR}, #{description, jdbcType=VARCHAR}, #{solution, jdbcType=VARCHAR}, #{photos, jdbcType=VARCHAR}, #{supplierOpinion, jdbcType=VARCHAR}, #{status, jdbcType=VARCHAR}, #{reviewStatus, jdbcType=VARCHAR}, #{completedAt, jdbcType=TIMESTAMP}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO client_aftersales (case_no, supplier_case_id, order_id, order_no, user_id, supplier_id, product_id, type, description, solution, photos, supplier_opinion, status, review_status, completed_at, created_at, updated_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.caseNo, jdbcType=VARCHAR}, #{item.supplierCaseId, jdbcType=BIGINT}, #{item.orderId, jdbcType=BIGINT}, #{item.orderNo, jdbcType=VARCHAR}, #{item.userId, jdbcType=BIGINT}, #{item.supplierId, jdbcType=BIGINT}, #{item.productId, jdbcType=BIGINT}, #{item.type, jdbcType=VARCHAR}, #{item.description, jdbcType=VARCHAR}, #{item.solution, jdbcType=VARCHAR}, #{item.photos, jdbcType=VARCHAR}, #{item.supplierOpinion, jdbcType=VARCHAR}, #{item.status, jdbcType=VARCHAR}, #{item.reviewStatus, jdbcType=VARCHAR}, #{item.completedAt, jdbcType=TIMESTAMP}, #{item.createdAt, jdbcType=TIMESTAMP}, #{item.updatedAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.ClientAftersale">
+        UPDATE client_aftersales
+        <set>
+            <if test="caseNo != null">case_no = #{caseNo, jdbcType=VARCHAR},</if>
+            <if test="supplierCaseId != null">supplier_case_id = #{supplierCaseId, jdbcType=BIGINT},</if>
+            <if test="orderId != null">order_id = #{orderId, jdbcType=BIGINT},</if>
+            <if test="orderNo != null">order_no = #{orderNo, jdbcType=VARCHAR},</if>
+            <if test="userId != null">user_id = #{userId, jdbcType=BIGINT},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="productId != null">product_id = #{productId, jdbcType=BIGINT},</if>
+            <if test="type != null">type = #{type, jdbcType=VARCHAR},</if>
+            <if test="description != null">description = #{description, jdbcType=VARCHAR},</if>
+            <if test="solution != null">solution = #{solution, jdbcType=VARCHAR},</if>
+            <if test="photos != null">photos = #{photos, jdbcType=VARCHAR},</if>
+            <if test="supplierOpinion != null">supplier_opinion = #{supplierOpinion, jdbcType=VARCHAR},</if>
+            <if test="status != null">status = #{status, jdbcType=VARCHAR},</if>
+            <if test="reviewStatus != null">review_status = #{reviewStatus, jdbcType=VARCHAR},</if>
+            <if test="completedAt != null">completed_at = #{completedAt, jdbcType=TIMESTAMP},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.ClientAftersale">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_aftersales
+        <where>
+            <if test="status == null">AND status != 'deleted'</if>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="caseNo != null and caseNo != ''">AND case_no = #{caseNo, jdbcType=VARCHAR}</if>
+            <if test="supplierCaseId != null">AND supplier_case_id = #{supplierCaseId, jdbcType=BIGINT}</if>
+            <if test="orderId != null">AND order_id = #{orderId, jdbcType=BIGINT}</if>
+            <if test="orderNo != null and orderNo != ''">AND order_no = #{orderNo, jdbcType=VARCHAR}</if>
+            <if test="userId != null">AND user_id = #{userId, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="productId != null">AND product_id = #{productId, jdbcType=BIGINT}</if>
+            <if test="type != null and type != ''">AND type = #{type, jdbcType=VARCHAR}</if>
+            <if test="description != null and description != ''">AND description = #{description, jdbcType=VARCHAR}</if>
+            <if test="solution != null and solution != ''">AND solution = #{solution, jdbcType=VARCHAR}</if>
+            <if test="photos != null and photos != ''">AND photos = #{photos, jdbcType=VARCHAR}</if>
+            <if test="supplierOpinion != null and supplierOpinion != ''">AND supplier_opinion = #{supplierOpinion, jdbcType=VARCHAR}</if>
+            <if test="status != null and status != ''">AND status = #{status, jdbcType=VARCHAR}</if>
+            <if test="reviewStatus != null and reviewStatus != ''">AND review_status = #{reviewStatus, jdbcType=VARCHAR}</if>
+            <if test="completedAt != null">AND completed_at = #{completedAt, jdbcType=TIMESTAMP}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+            <if test="updatedAt != null">AND updated_at = #{updatedAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_aftersales WHERE id = #{id, jdbcType=BIGINT} AND status != 'deleted'
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_aftersales
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+        AND status != 'deleted'
+    </select>
+
+    <update id="deleteById">
+        UPDATE client_aftersales SET status = 'deleted' WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteByIds">
+        UPDATE client_aftersales SET status = 'deleted' WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </update>
+
+</mapper>

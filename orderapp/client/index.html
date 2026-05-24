@@ -1,0 +1,32 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>家具商城客户端原型</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .notes { padding: 28px 28px 0; }
+    .note-card { padding: 20px; border-radius: 24px; background: rgba(255,255,255,.9); border: 1px solid rgba(17,24,39,.08); box-shadow: 0 12px 28px rgba(15,23,42,.06); }
+    .note-card h1 { margin: 0; font-size: 28px; }
+    .note-card p { margin: 10px 0 0; color: #64748b; line-height: 1.7; }
+    .iframe-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(430px, 1fr)); gap: 28px; padding: 28px; align-items: start; }
+    .section-head { display: flex; justify-content: space-between; align-items: center; margin: 0 0 14px; }
+    .section-head h2 { margin: 0; font-size: 20px; }
+    .section-head span { color: #2f80ed; font-size: 13px; font-weight: 700; }
+    iframe { width: 100%; height: 920px; border: 0; border-radius: 34px; background: transparent; box-shadow: 0 20px 50px rgba(15,23,42,.12); }
+  </style>
+</head>
+<body>
+  <div class="notes"><div class="note-card"><h1>家具客户端 App 高保真原型</h1><p>基于客户端需求和供应商端业务链路设计：供应商建档商品后，客户端可浏览、下单、跟踪配送安装、发起售后，并反向联动供应商端履约、钱包和经营数据。</p></div></div>
+  <div class="iframe-grid">
+    <div><div class="section-head"><h2>首页</h2><span>home.html</span></div><iframe src="home.html"></iframe></div>
+    <div><div class="section-head"><h2>商品浏览</h2><span>products.html</span></div><iframe src="products.html"></iframe></div>
+    <div><div class="section-head"><h2>确认订单</h2><span>checkout.html</span></div><iframe src="checkout.html"></iframe></div>
+    <div><div class="section-head"><h2>订单跟踪</h2><span>orders.html</span></div><iframe src="orders.html"></iframe></div>
+    <div><div class="section-head"><h2>售后服务</h2><span>aftersales.html</span></div><iframe src="aftersales.html"></iframe></div>
+    <div><div class="section-head"><h2>我的</h2><span>profile.html</span></div><iframe src="profile.html"></iframe></div>
+  </div>
+</body>
+</html>

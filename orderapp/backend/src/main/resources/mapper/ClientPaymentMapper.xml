@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.ClientPaymentMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.ClientPayment">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="payment_no" property="paymentNo" jdbcType="VARCHAR" />
+        <result column="order_id" property="orderId" jdbcType="BIGINT" />
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="user_id" property="userId" jdbcType="BIGINT" />
+        <result column="pay_channel" property="payChannel" jdbcType="VARCHAR" />
+        <result column="pay_amount" property="payAmount" jdbcType="DECIMAL" />
+        <result column="status" property="status" jdbcType="VARCHAR" />
+        <result column="paid_at" property="paidAt" jdbcType="TIMESTAMP" />
+        <result column="transaction_no" property="transactionNo" jdbcType="VARCHAR" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+        <result column="updated_at" property="updatedAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, payment_no, order_id, order_no, user_id, pay_channel, pay_amount, status, paid_at, transaction_no, created_at, updated_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.ClientPayment" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO client_payments (payment_no, order_id, order_no, user_id, pay_channel, pay_amount, status, paid_at, transaction_no, created_at, updated_at)
+        VALUES (#{paymentNo, jdbcType=VARCHAR}, #{orderId, jdbcType=BIGINT}, #{orderNo, jdbcType=VARCHAR}, #{userId, jdbcType=BIGINT}, #{payChannel, jdbcType=VARCHAR}, #{payAmount, jdbcType=DECIMAL}, #{status, jdbcType=VARCHAR}, #{paidAt, jdbcType=TIMESTAMP}, #{transactionNo, jdbcType=VARCHAR}, #{createdAt, jdbcType=TIMESTAMP}, #{updatedAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO client_payments (payment_no, order_id, order_no, user_id, pay_channel, pay_amount, status, paid_at, transaction_no, created_at, updated_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.paymentNo, jdbcType=VARCHAR}, #{item.orderId, jdbcType=BIGINT}, #{item.orderNo, jdbcType=VARCHAR}, #{item.userId, jdbcType=BIGINT}, #{item.payChannel, jdbcType=VARCHAR}, #{item.payAmount, jdbcType=DECIMAL}, #{item.status, jdbcType=VARCHAR}, #{item.paidAt, jdbcType=TIMESTAMP}, #{item.transactionNo, jdbcType=VARCHAR}, #{item.createdAt, jdbcType=TIMESTAMP}, #{item.updatedAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.ClientPayment">
+        UPDATE client_payments
+        <set>
+            <if test="paymentNo != null">payment_no = #{paymentNo, jdbcType=VARCHAR},</if>
+            <if test="orderId != null">order_id = #{orderId, jdbcType=BIGINT},</if>
+            <if test="orderNo != null">order_no = #{orderNo, jdbcType=VARCHAR},</if>
+            <if test="userId != null">user_id = #{userId, jdbcType=BIGINT},</if>
+            <if test="payChannel != null">pay_channel = #{payChannel, jdbcType=VARCHAR},</if>
+            <if test="payAmount != null">pay_amount = #{payAmount, jdbcType=DECIMAL},</if>
+            <if test="status != null">status = #{status, jdbcType=VARCHAR},</if>
+            <if test="paidAt != null">paid_at = #{paidAt, jdbcType=TIMESTAMP},</if>
+            <if test="transactionNo != null">transaction_no = #{transactionNo, jdbcType=VARCHAR},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+            <if test="updatedAt != null">updated_at = #{updatedAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.ClientPayment">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_payments
+        <where>
+            <if test="status == null">AND status != 'deleted'</if>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="paymentNo != null and paymentNo != ''">AND payment_no = #{paymentNo, jdbcType=VARCHAR}</if>
+            <if test="orderId != null">AND order_id = #{orderId, jdbcType=BIGINT}</if>
+            <if test="orderNo != null and orderNo != ''">AND order_no = #{orderNo, jdbcType=VARCHAR}</if>
+            <if test="userId != null">AND user_id = #{userId, jdbcType=BIGINT}</if>
+            <if test="payChannel != null and payChannel != ''">AND pay_channel = #{payChannel, jdbcType=VARCHAR}</if>
+            <if test="payAmount != null">AND pay_amount = #{payAmount, jdbcType=DECIMAL}</if>
+            <if test="status != null and status != ''">AND status = #{status, jdbcType=VARCHAR}</if>
+            <if test="paidAt != null">AND paid_at = #{paidAt, jdbcType=TIMESTAMP}</if>
+            <if test="transactionNo != null and transactionNo != ''">AND transaction_no = #{transactionNo, jdbcType=VARCHAR}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+            <if test="updatedAt != null">AND updated_at = #{updatedAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_payments WHERE id = #{id, jdbcType=BIGINT} AND status != 'deleted'
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_payments
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+        AND status != 'deleted'
+    </select>
+
+    <update id="deleteById">
+        UPDATE client_payments SET status = 'deleted' WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteByIds">
+        UPDATE client_payments SET status = 'deleted' WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </update>
+
+</mapper>

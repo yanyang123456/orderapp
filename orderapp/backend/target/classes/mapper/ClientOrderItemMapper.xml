@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.ClientOrderItemMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.ClientOrderItem">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="order_id" property="orderId" jdbcType="BIGINT" />
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="product_id" property="productId" jdbcType="BIGINT" />
+        <result column="product_name" property="productName" jdbcType="VARCHAR" />
+        <result column="product_image" property="productImage" jdbcType="VARCHAR" />
+        <result column="category" property="category" jdbcType="VARCHAR" />
+        <result column="material" property="material" jdbcType="VARCHAR" />
+        <result column="color" property="color" jdbcType="VARCHAR" />
+        <result column="size" property="size" jdbcType="VARCHAR" />
+        <result column="model" property="model" jdbcType="VARCHAR" />
+        <result column="price" property="price" jdbcType="DECIMAL" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="support_installation" property="supportInstallation" jdbcType="BOOLEAN" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, order_id, order_no, supplier_id, product_id, product_name, product_image, category, material, color, size, model, price, quantity, amount, support_installation, created_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.ClientOrderItem" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO client_order_items (order_id, order_no, supplier_id, product_id, product_name, product_image, category, material, color, size, model, price, quantity, amount, support_installation, created_at)
+        VALUES (#{orderId, jdbcType=BIGINT}, #{orderNo, jdbcType=VARCHAR}, #{supplierId, jdbcType=BIGINT}, #{productId, jdbcType=BIGINT}, #{productName, jdbcType=VARCHAR}, #{productImage, jdbcType=VARCHAR}, #{category, jdbcType=VARCHAR}, #{material, jdbcType=VARCHAR}, #{color, jdbcType=VARCHAR}, #{size, jdbcType=VARCHAR}, #{model, jdbcType=VARCHAR}, #{price, jdbcType=DECIMAL}, #{quantity, jdbcType=INTEGER}, #{amount, jdbcType=DECIMAL}, #{supportInstallation, jdbcType=BOOLEAN}, #{createdAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO client_order_items (order_id, order_no, supplier_id, product_id, product_name, product_image, category, material, color, size, model, price, quantity, amount, support_installation, created_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.orderId, jdbcType=BIGINT}, #{item.orderNo, jdbcType=VARCHAR}, #{item.supplierId, jdbcType=BIGINT}, #{item.productId, jdbcType=BIGINT}, #{item.productName, jdbcType=VARCHAR}, #{item.productImage, jdbcType=VARCHAR}, #{item.category, jdbcType=VARCHAR}, #{item.material, jdbcType=VARCHAR}, #{item.color, jdbcType=VARCHAR}, #{item.size, jdbcType=VARCHAR}, #{item.model, jdbcType=VARCHAR}, #{item.price, jdbcType=DECIMAL}, #{item.quantity, jdbcType=INTEGER}, #{item.amount, jdbcType=DECIMAL}, #{item.supportInstallation, jdbcType=BOOLEAN}, #{item.createdAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.ClientOrderItem">
+        UPDATE client_order_items
+        <set>
+            <if test="orderId != null">order_id = #{orderId, jdbcType=BIGINT},</if>
+            <if test="orderNo != null">order_no = #{orderNo, jdbcType=VARCHAR},</if>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="productId != null">product_id = #{productId, jdbcType=BIGINT},</if>
+            <if test="productName != null">product_name = #{productName, jdbcType=VARCHAR},</if>
+            <if test="productImage != null">product_image = #{productImage, jdbcType=VARCHAR},</if>
+            <if test="category != null">category = #{category, jdbcType=VARCHAR},</if>
+            <if test="material != null">material = #{material, jdbcType=VARCHAR},</if>
+            <if test="color != null">color = #{color, jdbcType=VARCHAR},</if>
+            <if test="size != null">size = #{size, jdbcType=VARCHAR},</if>
+            <if test="model != null">model = #{model, jdbcType=VARCHAR},</if>
+            <if test="price != null">price = #{price, jdbcType=DECIMAL},</if>
+            <if test="quantity != null">quantity = #{quantity, jdbcType=INTEGER},</if>
+            <if test="amount != null">amount = #{amount, jdbcType=DECIMAL},</if>
+            <if test="supportInstallation != null">support_installation = #{supportInstallation, jdbcType=BOOLEAN},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.ClientOrderItem">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_order_items
+        <where>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="orderId != null">AND order_id = #{orderId, jdbcType=BIGINT}</if>
+            <if test="orderNo != null and orderNo != ''">AND order_no = #{orderNo, jdbcType=VARCHAR}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="productId != null">AND product_id = #{productId, jdbcType=BIGINT}</if>
+            <if test="productName != null and productName != ''">AND product_name = #{productName, jdbcType=VARCHAR}</if>
+            <if test="productImage != null and productImage != ''">AND product_image = #{productImage, jdbcType=VARCHAR}</if>
+            <if test="category != null and category != ''">AND category = #{category, jdbcType=VARCHAR}</if>
+            <if test="material != null and material != ''">AND material = #{material, jdbcType=VARCHAR}</if>
+            <if test="color != null and color != ''">AND color = #{color, jdbcType=VARCHAR}</if>
+            <if test="size != null and size != ''">AND size = #{size, jdbcType=VARCHAR}</if>
+            <if test="model != null and model != ''">AND model = #{model, jdbcType=VARCHAR}</if>
+            <if test="price != null">AND price = #{price, jdbcType=DECIMAL}</if>
+            <if test="quantity != null">AND quantity = #{quantity, jdbcType=INTEGER}</if>
+            <if test="amount != null">AND amount = #{amount, jdbcType=DECIMAL}</if>
+            <if test="supportInstallation != null">AND support_installation = #{supportInstallation, jdbcType=BOOLEAN}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_order_items WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM client_order_items
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </select>
+
+    <select id="selectByOrderId" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_order_items
+        WHERE order_id = #{orderId, jdbcType=BIGINT}
+        ORDER BY id ASC
+    </select>
+
+    <select id="selectByOrderNo" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" />
+        FROM client_order_items
+        WHERE order_no = #{orderNo, jdbcType=VARCHAR}
+        ORDER BY id ASC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM client_order_items WHERE id = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByIds">
+        DELETE FROM client_order_items WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </delete>
+
+</mapper>

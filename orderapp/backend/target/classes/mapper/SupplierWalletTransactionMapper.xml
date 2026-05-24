@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.orderapp.supplier.mapper.SupplierWalletTransactionMapper">
+
+    <resultMap id="BaseResultMap" type="com.orderapp.supplier.entity.SupplierWalletTransaction">
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <result column="supplier_id" property="supplierId" jdbcType="BIGINT" />
+        <result column="settlement_id" property="settlementId" jdbcType="BIGINT" />
+        <result column="title" property="title" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="amount" property="amount" jdbcType="DECIMAL" />
+        <result column="direction" property="direction" jdbcType="VARCHAR" />
+        <result column="biz_type" property="bizType" jdbcType="VARCHAR" />
+        <result column="biz_no" property="bizNo" jdbcType="VARCHAR" />
+        <result column="created_at" property="createdAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="BaseColumnList">id, supplier_id, settlement_id, title, description, amount, direction, biz_type, biz_no, created_at</sql>
+
+    <insert id="insert" parameterType="com.orderapp.supplier.entity.SupplierWalletTransaction" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO supplier_wallet_transactions (supplier_id, settlement_id, title, description, amount, direction, biz_type, biz_no, created_at)
+        VALUES (#{supplierId, jdbcType=BIGINT}, #{settlementId, jdbcType=BIGINT}, #{title, jdbcType=VARCHAR}, #{description, jdbcType=VARCHAR}, #{amount, jdbcType=DECIMAL}, #{direction, jdbcType=VARCHAR}, #{bizType, jdbcType=VARCHAR}, #{bizNo, jdbcType=VARCHAR}, #{createdAt, jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertBatch">
+        INSERT INTO supplier_wallet_transactions (supplier_id, settlement_id, title, description, amount, direction, biz_type, biz_no, created_at) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.supplierId, jdbcType=BIGINT}, #{item.settlementId, jdbcType=BIGINT}, #{item.title, jdbcType=VARCHAR}, #{item.description, jdbcType=VARCHAR}, #{item.amount, jdbcType=DECIMAL}, #{item.direction, jdbcType=VARCHAR}, #{item.bizType, jdbcType=VARCHAR}, #{item.bizNo, jdbcType=VARCHAR}, #{item.createdAt, jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateById" parameterType="com.orderapp.supplier.entity.SupplierWalletTransaction">
+        UPDATE supplier_wallet_transactions
+        <set>
+            <if test="supplierId != null">supplier_id = #{supplierId, jdbcType=BIGINT},</if>
+            <if test="settlementId != null">settlement_id = #{settlementId, jdbcType=BIGINT},</if>
+            <if test="title != null">title = #{title, jdbcType=VARCHAR},</if>
+            <if test="description != null">description = #{description, jdbcType=VARCHAR},</if>
+            <if test="amount != null">amount = #{amount, jdbcType=DECIMAL},</if>
+            <if test="direction != null">direction = #{direction, jdbcType=VARCHAR},</if>
+            <if test="bizType != null">biz_type = #{bizType, jdbcType=VARCHAR},</if>
+            <if test="bizNo != null">biz_no = #{bizNo, jdbcType=VARCHAR},</if>
+            <if test="createdAt != null">created_at = #{createdAt, jdbcType=TIMESTAMP},</if>
+        </set>
+        WHERE id = #{id, jdbcType=BIGINT}
+    </update>
+
+    <select id="selectByCondition" resultMap="BaseResultMap" parameterType="com.orderapp.supplier.entity.SupplierWalletTransaction">
+        SELECT <include refid="BaseColumnList" />
+        FROM supplier_wallet_transactions
+        <where>
+            <if test="id != null">AND id = #{id, jdbcType=BIGINT}</if>
+            <if test="supplierId != null">AND supplier_id = #{supplierId, jdbcType=BIGINT}</if>
+            <if test="settlementId != null">AND settlement_id = #{settlementId, jdbcType=BIGINT}</if>
+            <if test="title != null and title != ''">AND title = #{title, jdbcType=VARCHAR}</if>
+            <if test="description != null and description != ''">AND description = #{description, jdbcType=VARCHAR}</if>
+            <if test="amount != null">AND amount = #{amount, jdbcType=DECIMAL}</if>
+            <if test="direction != null and direction != ''">AND direction = #{direction, jdbcType=VARCHAR}</if>
+            <if test="bizType != null and bizType != ''">AND biz_type = #{bizType, jdbcType=VARCHAR}</if>
+            <if test="bizNo != null and bizNo != ''">AND biz_no = #{bizNo, jdbcType=VARCHAR}</if>
+            <if test="createdAt != null">AND created_at = #{createdAt, jdbcType=TIMESTAMP}</if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_wallet_transactions WHERE id = #{id, jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByIds" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumnList" /> FROM supplier_wallet_transactions
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM supplier_wallet_transactions WHERE id = #{id, jdbcType=BIGINT}
+    </delete>
+
+    <delete id="deleteByIds">
+        DELETE FROM supplier_wallet_transactions WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">#{id, jdbcType=BIGINT}</foreach>
+    </delete>
+
+</mapper>
